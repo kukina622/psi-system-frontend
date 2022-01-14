@@ -1,13 +1,6 @@
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { formatDate } from "utils/date";
-
-interface IinventoryInfo {
-  type: string;
-  name: string;
-  purchase_price: number;
-  quantity: number;
-  purchase_time: Date;
-}
+import { IinventoryInfo } from "./types";
 
 interface inventoryCardProps {
   inventoryInfo: IinventoryInfo;
@@ -28,7 +21,9 @@ const InventoryCard = ({ inventoryInfo }: inventoryCardProps) => {
           <br />
           <span>購買時間：{formatDate(inventoryInfo.purchase_time)} </span>
           <br />
-          <button className="btn btn-primary mt-1">編輯</button>
+          <Button variant="primary" className="mt-1">
+            編輯
+          </Button>
         </Card.Text>
       </Card.Body>
     </Card>
