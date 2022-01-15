@@ -10,9 +10,10 @@ interface inventoryCardProps {
 
 const InventoryCard = ({ inventoryInfo }: inventoryCardProps) => {
   const [showDialog, setShowDialog] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   return (
     <>
-      <Card>
+      <Card onClick={() => setShowDialog(true)}>
         <Card.Body>
           <Card.Title>{inventoryInfo.name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
@@ -28,7 +29,10 @@ const InventoryCard = ({ inventoryInfo }: inventoryCardProps) => {
             <Button
               variant="primary"
               className="mt-1"
-              onClick={() => setShowDialog(true)}
+              onClick={() => {
+                setEditMode(true);
+                setShowDialog(true);
+              }}
             >
               編輯
             </Button>
@@ -39,6 +43,8 @@ const InventoryCard = ({ inventoryInfo }: inventoryCardProps) => {
         inventoryInfo={inventoryInfo}
         show={showDialog}
         setShow={setShowDialog}
+        editMode={editMode}
+        setEditMode={setEditMode}
       />
     </>
   );
