@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal, Button, InputGroup, FormControl, Form } from "react-bootstrap";
+import { formatDate } from "utils/date";
 import { IinventoryInfo } from "./types";
 
 interface InventoryDialogProps {
@@ -8,12 +9,38 @@ interface InventoryDialogProps {
   setShow: (show: boolean) => void;
 }
 
-const InventoryDialog = () => {
+const InventoryDialog = ({
+  inventoryInfo,
+  show,
+  setShow
+}: InventoryDialogProps) => {
   const [switchMode, setSwitchMode] = useState(false);
+  const [_inventoryInfo, setInventoryInfo] = useState(inventoryInfo);
+  const { type, name, purchase_price, quantity, purchase_time } =
+    _inventoryInfo;
+  function inputChangeHandle(prop: string, value: string | number) {
+    let _value: string | number | Date = value;
+    switch (prop) {
+      case "purchase_price":
+      case "quantity":
+        _value = parseInt(value as string);
+        break;
+      case "purchase_time":
+        _value = new Date(value as string);
+        break;
+    }
+    setInventoryInfo((prev) => {
+      return {
+        ...prev,
+        [prop]: _value
+      };
+    });
+  }
+
   return (
-    <Modal show={true}>
+    <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Modal title</Modal.Title>
+        <Modal.Title>存貨檢視</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Check
@@ -29,6 +56,10 @@ const InventoryDialog = () => {
           <FormControl
             aria-describedby="inputGroup-sizing-default"
             readOnly={!switchMode}
+            defaultValue={name}
+            onChange={(e) => {
+              inputChangeHandle("name", e.target.value);
+            }}
           />
         </InputGroup>
         <InputGroup className="mb-3">
@@ -38,6 +69,10 @@ const InventoryDialog = () => {
           <FormControl
             aria-describedby="inputGroup-sizing-default"
             readOnly={!switchMode}
+            defaultValue={type}
+            onChange={(e) => {
+              inputChangeHandle("type", e.target.value);
+            }}
           />
         </InputGroup>
         <InputGroup className="mb-3">
@@ -47,6 +82,10 @@ const InventoryDialog = () => {
           <FormControl
             aria-describedby="inputGroup-sizing-default"
             readOnly={!switchMode}
+            defaultValue={purchase_price}
+            onChange={(e) => {
+              inputChangeHandle("purchase_price", e.target.value);
+            }}
           />
         </InputGroup>
         <InputGroup className="mb-3">
@@ -56,17 +95,35 @@ const InventoryDialog = () => {
           <FormControl
             aria-describedby="inputGroup-sizing-default"
             readOnly={!switchMode}
+            defaultValue={quantity}
+            onChange={(e) => {
+              inputChangeHandle("quantity", e.target.value);
+            }}
           />
         </InputGroup>
         <InputGroup>
           <InputGroup.Text id="inputGroup-sizing-default">
             購買時間
           </InputGroup.Text>
-          <Form.Control type="date" readOnly={!switchMode} />
+          <Form.Control
+            type="date"
+            readOnly={!switchMode}
+            defaultValue={formatDate(purchase_time)}
+            onChange={(e) => {
+              inputChangeHandle("purchase_time", e.target.value);
+            }}
+          />
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary">Close</Button>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setShow(false);
+          }}
+        >
+          Close
+        </Button>
         <Button variant="primary">Save changes</Button>
       </Modal.Footer>
     </Modal>
