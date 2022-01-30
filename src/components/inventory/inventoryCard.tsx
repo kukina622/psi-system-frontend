@@ -15,14 +15,14 @@ const InventoryCard = ({ inventoryInfo }: inventoryCardProps) => {
     <>
       <Card onClick={() => setShowDialog(true)}>
         <Card.Body>
-          <Card.Title>{inventoryInfo.name}</Card.Title>
+          <Card.Title>{inventoryInfo.inventory_name}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
-            {inventoryInfo.type}
+            {inventoryInfo.inventory_type}
           </Card.Subtitle>
           <Card.Text>
             <span>購買價格：{inventoryInfo.purchase_price}</span>
             <br />
-            <span>庫存數量：{inventoryInfo.quantity}</span>
+            <span>庫存數量：{inventoryInfo.inventory_quantity}</span>
             <br />
             <span>購買時間：{formatDate(inventoryInfo.purchase_time)} </span>
             <br />

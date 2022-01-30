@@ -19,13 +19,18 @@ const InventoryDialog = ({
   setEditMode
 }: InventoryDialogProps) => {
   const [_inventoryInfo, setInventoryInfo] = useState(inventoryInfo);
-  const { type, name, purchase_price, quantity, purchase_time } =
-    _inventoryInfo;
+  const {
+    inventory_type,
+    inventory_name,
+    purchase_price,
+    inventory_quantity,
+    purchase_time
+  } = _inventoryInfo;
   function inputChangeHandle(prop: string, value: string | number) {
     let _value: string | number | Date = value;
     switch (prop) {
       case "purchase_price":
-      case "quantity":
+      case "inventory_quantity":
         _value = parseInt(value as string);
         break;
       case "purchase_time":
@@ -59,9 +64,9 @@ const InventoryDialog = ({
           <FormControl
             aria-describedby="inputGroup-sizing-default"
             readOnly={!editMode}
-            defaultValue={name}
+            defaultValue={inventory_name}
             onChange={(e) => {
-              inputChangeHandle("name", e.target.value);
+              inputChangeHandle("inventory_name", e.target.value);
             }}
           />
         </InputGroup>
@@ -72,9 +77,9 @@ const InventoryDialog = ({
           <FormControl
             aria-describedby="inputGroup-sizing-default"
             readOnly={!editMode}
-            defaultValue={type}
+            defaultValue={inventory_type}
             onChange={(e) => {
-              inputChangeHandle("type", e.target.value);
+              inputChangeHandle("inventory_type", e.target.value);
             }}
           />
         </InputGroup>
@@ -98,9 +103,9 @@ const InventoryDialog = ({
           <FormControl
             aria-describedby="inputGroup-sizing-default"
             readOnly={!editMode}
-            defaultValue={quantity}
+            defaultValue={inventory_quantity}
             onChange={(e) => {
-              inputChangeHandle("quantity", e.target.value);
+              inputChangeHandle("inventory_quantity", e.target.value);
             }}
           />
         </InputGroup>
