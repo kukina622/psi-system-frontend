@@ -1,21 +1,33 @@
 import { Container, Form, Row, Col } from "react-bootstrap";
 import InventoryCard from "components/inventory/inventoryCard";
+import { useEffect, useState } from "react";
+import { apiGetAllInventory } from "api/inventoryApi";
 
 const Inventory = () => {
-  const testData = Array.from({ length: 5 }).map((_, index) => {
-    return {
-      inventory_type: "測試類別",
-      inventory_name: "test",
-      purchase_price: index,
-      inventory_quantity: 20,
-      purchase_time: new Date(2021, 0, 13)
-    };
-  });
+  const [inventoryInfo, setInventoryInfo] = useState([]);
+  useEffect(() => {
+    async function fetchInventoryInfo() {
+      interface IfetchInventoryInfo {
+        inventory_type: string;
+        inventory_name: string;
+        purchase_price: number;
+        inventory_quantity: number;
+        purchase_time: string;
+      }
+      const { data } = await apiGetAllInventory();
+      setInventoryInfo(
+        data.map((x: IfetchInventoryInfo) => {
+          return { ...x, purchase_time: new Date(x.purchase_time) };
+        })
+      );
+    }
+    fetchInventoryInfo();
+  }, []);
   let inventoryCardList = [];
-  for (let i = 0; i < testData.length; i++) {
+  for (let i = 0; i < inventoryInfo.length; i++) {
     inventoryCardList.push(
       <Col md={3} className="mt-3" key={i}>
-        <InventoryCard inventoryInfo={testData[i]} />
+        <InventoryCard inventoryInfo={inventoryInfo[i]} />
       </Col>
     );
   }
