@@ -1,6 +1,6 @@
 import { Card, Button } from "react-bootstrap";
 import { formatDate } from "utils/date";
-import { IinventoryInfo } from "./types";
+import { IinventoryInfo } from "types/inventory";
 import InventoryDialog from "components/inventory/inventoryDialog";
 import { useState } from "react";
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Modal, Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import { formatDate } from "utils/date";
-import { IinventoryInfo } from "./types";
+import { IinventoryInfo } from "types/inventory";
 
 interface InventoryDialogProps {
   inventoryInfo: IinventoryInfo;
