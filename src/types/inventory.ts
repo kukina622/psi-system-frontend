@@ -1,4 +1,5 @@
 export interface IinventoryInfo {
+  inventory_id: number;
   inventory_type: string;
   inventory_name: string;
   purchase_price: number;
@@ -7,6 +8,7 @@ export interface IinventoryInfo {
 }
 
 export interface IfetchInventoryInfo {
+  inventory_id: number;
   inventory_type: string;
   inventory_name: string;
   purchase_price: number;
