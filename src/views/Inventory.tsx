@@ -2,35 +2,40 @@ import { Container, Form, Row, Col } from "react-bootstrap";
 import InventoryCard from "components/inventory/inventoryCard";
 import { useEffect, useState } from "react";
 import { apiGetAllInventory } from "api/inventoryApi";
+import { IfetchInventoryInfo, IinventoryInfo } from "types/inventory";
 
 const Inventory = () => {
-  const [inventoryInfo, setInventoryInfo] = useState([]);
+  const [inventoryInfoList, setInventoryInfoList] = useState(
+    [] as IinventoryInfo[]
+  );
+  const [showInventoryCardList, setShowInventoryCardList] = useState(
+    [] as JSX.Element[]
+  );
   useEffect(() => {
     async function fetchInventoryInfo() {
-      interface IfetchInventoryInfo {
-        inventory_type: string;
-        inventory_name: string;
-        purchase_price: number;
-        inventory_quantity: number;
-        purchase_time: string;
-      }
       const { data } = await apiGetAllInventory();
-      setInventoryInfo(
-        data.map((x: IfetchInventoryInfo) => {
-          return { ...x, purchase_time: new Date(x.purchase_time) };
-        })
+      const _inventoryInfoList: IinventoryInfo[] = data.map(
+        (inventoryInfo: IfetchInventoryInfo) => {
+          return {
+            ...inventoryInfo,
+            purchase_time: new Date(inventoryInfo.purchase_time),
+          };
+        }
       );
+      const _showInventoryCardList: JSX.Element[] = _inventoryInfoList.map(
+        (inventoryInfo: IinventoryInfo, key) => {
+          return (
+            <Col md={3} className="mt-3" key={key}>
+              <InventoryCard inventoryInfo={inventoryInfo} />
+            </Col>
+          );
+        }
+      );
+      setInventoryInfoList(_inventoryInfoList);
+      setShowInventoryCardList(_showInventoryCardList);
     }
     fetchInventoryInfo();
   }, []);
-  let inventoryCardList = [];
-  for (let i = 0; i < inventoryInfo.length; i++) {
-    inventoryCardList.push(
-      <Col md={3} className="mt-3" key={i}>
-        <InventoryCard inventoryInfo={inventoryInfo[i]} />
-      </Col>
-    );
-  }
   return (
     <Container>
       <Row>
@@ -43,7 +48,7 @@ const Inventory = () => {
           </Form.Select>
         </Col>
       </Row>
-      <Row>{inventoryCardList}</Row>
+      <Row>{showInventoryCardList}</Row>
     </Container>
   );
 };
