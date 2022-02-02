@@ -4,6 +4,19 @@ import InventoryTypeSelect from "components/inventory/inventoryTypeSelect";
 import { useEffect, useState } from "react";
 import { apiGetAllInventory } from "api/inventoryApi";
 import { IfetchInventoryInfo, IinventoryInfo } from "types/inventory";
+import { inventoryContext } from "context/inventoryContext";
+
+function generateShowInventoryCardList(
+  _inventoryInfoList: IinventoryInfo[]
+): JSX.Element[] {
+  return _inventoryInfoList.map((inventoryInfo: IinventoryInfo, key) => {
+    return (
+      <Col md={3} className="mt-3" key={key}>
+        <InventoryCard inventoryInfo={inventoryInfo} />
+      </Col>
+    );
+  });
+}
 
 const Inventory = () => {
   const [inventoryInfoList, setInventoryInfoList] = useState(
@@ -23,15 +36,8 @@ const Inventory = () => {
           };
         }
       );
-      const _showInventoryCardList: JSX.Element[] = _inventoryInfoList.map(
-        (inventoryInfo: IinventoryInfo, key) => {
-          return (
-            <Col md={3} className="mt-3" key={key}>
-              <InventoryCard inventoryInfo={inventoryInfo} />
-            </Col>
-          );
-        }
-      );
+      const _showInventoryCardList: JSX.Element[] =
+        generateShowInventoryCardList(_inventoryInfoList);
       setInventoryInfoList(_inventoryInfoList);
       setShowInventoryCardList(_showInventoryCardList);
     }
@@ -39,12 +45,22 @@ const Inventory = () => {
   }, []);
   return (
     <Container>
-      <Row>
-        <Col md={3}>
-          <InventoryTypeSelect />
-        </Col>
-      </Row>
-      <Row>{showInventoryCardList}</Row>
+      <inventoryContext.Provider
+        value={{
+          inventoryInfoList,
+          setInventoryInfoList,
+          showInventoryCardList,
+          setShowInventoryCardList,
+          generateShowInventoryCardList
+        }}
+      >
+        <Row>
+          <Col md={3}>
+            <InventoryTypeSelect />
+          </Col>
+        </Row>
+        <Row>{showInventoryCardList}</Row>
+      </inventoryContext.Provider>
     </Container>
   );
 };
