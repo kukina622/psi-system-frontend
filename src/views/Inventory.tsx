@@ -1,5 +1,6 @@
-import { Container, Form, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import InventoryCard from "components/inventory/inventoryCard";
+import InventoryTypeSelect from "components/inventory/inventoryTypeSelect";
 import { useEffect, useState } from "react";
 import { apiGetAllInventory } from "api/inventoryApi";
 import { IfetchInventoryInfo, IinventoryInfo } from "types/inventory";
@@ -18,7 +19,7 @@ const Inventory = () => {
         (inventoryInfo: IfetchInventoryInfo) => {
           return {
             ...inventoryInfo,
-            purchase_time: new Date(inventoryInfo.purchase_time),
+            purchase_time: new Date(inventoryInfo.purchase_time)
           };
         }
       );
@@ -40,12 +41,7 @@ const Inventory = () => {
     <Container>
       <Row>
         <Col md={3}>
-          <Form.Select aria-label="Default select example" className="mt-3">
-            <option>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </Form.Select>
+          <InventoryTypeSelect />
         </Col>
       </Row>
       <Row>{showInventoryCardList}</Row>
