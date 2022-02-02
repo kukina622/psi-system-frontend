@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import { formatDate } from "utils/date";
 import { IinventoryInfo } from "types/inventory";
+import { apiUpdateInventoryById } from "api/inventoryApi";
 
 interface InventoryDialogProps {
   inventoryInfo: IinventoryInfo;
@@ -44,7 +45,15 @@ const InventoryDialog = ({
       };
     });
   }
-
+  async function updateInventory() {
+    const { inventory_id } = _inventoryInfo;
+    try {
+      await apiUpdateInventoryById(_inventoryInfo, inventory_id);
+      alert("更新成功");
+    } catch (e) {
+      console.log(e);
+    }
+  }
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
@@ -132,7 +141,15 @@ const InventoryDialog = ({
         >
           Close
         </Button>
-        <Button variant="primary">Save changes</Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            updateInventory();
+            setShow(false);
+          }}
+        >
+          Save changes
+        </Button>
       </Modal.Footer>
     </Modal>
   );
