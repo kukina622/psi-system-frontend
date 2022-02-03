@@ -3,12 +3,9 @@ import { IinventoryInfo } from "types/inventory";
 
 interface IContextProps {
   inventoryInfoList: IinventoryInfo[];
-  setInventoryInfoList: (inventoryInfoList: IinventoryInfo[]) => void;
-  showInventoryCardList: JSX.Element[];
-  setShowInventoryCardList: (showInventoryCardList: JSX.Element[]) => void;
-  generateShowInventoryCardList: (
-    _inventoryInfoList: IinventoryInfo[]
-  ) => JSX.Element[];
+  setInventoryInfoList: React.Dispatch<React.SetStateAction<IinventoryInfo[]>>;
+  showInventoryType: string | null;
+  setShowInventoryType: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const inventoryContext = createContext({} as IContextProps);

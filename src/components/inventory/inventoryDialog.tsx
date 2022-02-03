@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Modal, Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import { formatDate } from "utils/date";
 import { IinventoryInfo } from "types/inventory";
 import { apiUpdateInventoryById } from "api/inventoryApi";
+import { inventoryContext } from "context/inventoryContext";
 
 interface InventoryDialogProps {
   inventoryInfo: IinventoryInfo;
@@ -20,6 +21,7 @@ const InventoryDialog = ({
   setEditMode
 }: InventoryDialogProps) => {
   const [_inventoryInfo, setInventoryInfo] = useState(inventoryInfo);
+  const { setInventoryInfoList } = useContext(inventoryContext);
   const {
     inventory_type,
     inventory_name,
@@ -27,6 +29,11 @@ const InventoryDialog = ({
     inventory_quantity,
     purchase_time
   } = _inventoryInfo;
+  
+  useEffect(() => {
+    setInventoryInfo(inventoryInfo);
+  }, [inventoryInfo]);
+
   function inputChangeHandle(prop: string, value: string | number) {
     let _value: string | number | Date = value;
     switch (prop) {
@@ -49,6 +56,15 @@ const InventoryDialog = ({
     const { inventory_id } = _inventoryInfo;
     try {
       await apiUpdateInventoryById(_inventoryInfo, inventory_id);
+      setInventoryInfoList((prev: IinventoryInfo[]) => {
+        const next: IinventoryInfo[] = [...prev];
+        const index: number = next.findIndex(
+          (inventoryInfo: IinventoryInfo) =>
+            inventoryInfo.inventory_id === inventory_id
+        );
+        next[index] = { ..._inventoryInfo };
+        return next;
+      });
       alert("更新成功");
     } catch (e) {
       console.log(e);

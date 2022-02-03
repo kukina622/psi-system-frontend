@@ -4,11 +4,8 @@ import { inventoryContext } from "context/inventoryContext";
 import { IinventoryInfo } from "types/inventory";
 
 const InventoryTypeSelect = () => {
-  const {
-    inventoryInfoList,
-    setShowInventoryCardList,
-    generateShowInventoryCardList
-  } = useContext(inventoryContext);
+  const { inventoryInfoList, setShowInventoryType } =
+    useContext(inventoryContext);
   const inventoryTypeList: string[] = inventoryInfoList.map(
     ({ inventory_type }: IinventoryInfo) => inventory_type
   );
@@ -18,17 +15,10 @@ const InventoryTypeSelect = () => {
 
   function handleInventoryTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const selectedValue: number = parseInt(e.target.value);
-    let filterInventoryInfoList: IinventoryInfo[] = inventoryInfoList;
-    if (selectedValue !== -1) {
-      const selectedType: string = inventoryTypeListNoRepeat[selectedValue];
-      filterInventoryInfoList = inventoryInfoList.filter(
-        ({ inventory_type }: IinventoryInfo) => inventory_type === selectedType
-      );
+    if (selectedValue === -1) {
+      return setShowInventoryType(null);
     }
-    const _showInventoryCardList = generateShowInventoryCardList(
-      filterInventoryInfoList
-    );
-    setShowInventoryCardList(_showInventoryCardList);
+    setShowInventoryType(inventoryTypeListNoRepeat[selectedValue]);
   }
 
   return (

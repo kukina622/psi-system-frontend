@@ -6,24 +6,12 @@ import { apiGetAllInventory } from "api/inventoryApi";
 import { IfetchInventoryInfo, IinventoryInfo } from "types/inventory";
 import { inventoryContext } from "context/inventoryContext";
 
-function generateShowInventoryCardList(
-  _inventoryInfoList: IinventoryInfo[]
-): JSX.Element[] {
-  return _inventoryInfoList.map((inventoryInfo: IinventoryInfo, key) => {
-    return (
-      <Col md={3} className="mt-3" key={key}>
-        <InventoryCard inventoryInfo={inventoryInfo} />
-      </Col>
-    );
-  });
-}
-
 const Inventory = () => {
   const [inventoryInfoList, setInventoryInfoList] = useState(
     [] as IinventoryInfo[]
   );
-  const [showInventoryCardList, setShowInventoryCardList] = useState(
-    [] as JSX.Element[]
+  const [showInventoryType, setShowInventoryType] = useState<string | null>(
+    null
   );
   useEffect(() => {
     async function fetchInventoryInfo() {
@@ -36,22 +24,28 @@ const Inventory = () => {
           };
         }
       );
-      const _showInventoryCardList: JSX.Element[] =
-        generateShowInventoryCardList(_inventoryInfoList);
       setInventoryInfoList(_inventoryInfoList);
-      setShowInventoryCardList(_showInventoryCardList);
     }
     fetchInventoryInfo();
   }, []);
+
+  let showInventoryInfoList: IinventoryInfo[] = inventoryInfoList;
+  if (showInventoryType !== null) {
+    showInventoryInfoList = showInventoryInfoList.filter(
+      ({ inventory_type }: IinventoryInfo) => {
+        return inventory_type === showInventoryType;
+      }
+    );
+  }
+
   return (
     <Container>
       <inventoryContext.Provider
         value={{
           inventoryInfoList,
           setInventoryInfoList,
-          showInventoryCardList,
-          setShowInventoryCardList,
-          generateShowInventoryCardList
+          showInventoryType,
+          setShowInventoryType
         }}
       >
         <Row>
@@ -59,7 +53,15 @@ const Inventory = () => {
             <InventoryTypeSelect />
           </Col>
         </Row>
-        <Row>{showInventoryCardList}</Row>
+        <Row>
+          {showInventoryInfoList.map((inventoryInfo: IinventoryInfo, key) => {
+            return (
+              <Col md={3} className="mt-3" key={key}>
+                <InventoryCard inventoryInfo={inventoryInfo} />
+              </Col>
+            );
+          })}
+        </Row>
       </inventoryContext.Provider>
     </Container>
   );
