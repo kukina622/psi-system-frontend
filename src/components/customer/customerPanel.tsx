@@ -8,9 +8,25 @@ import {
   Row,
   Card
 } from "react-bootstrap";
+import { IcustomerInfo } from "types/customer";
 
-const CustomerPanel = () => {
+interface customerPanelProps {
+  customerInfo: IcustomerInfo;
+}
+
+const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
   const [editMode, setEditMode] = useState(false);
+  const [_customerInfo, setCustomerInfo] = useState(customerInfo);
+  const {
+    customer_id,
+    customer_name,
+    tax_ID,
+    contact_person,
+    phone,
+    fax_number,
+    customer_email,
+    customer_address
+  } = _customerInfo;
   return (
     <Card>
       <Card.Header className="position-relative">
@@ -33,7 +49,8 @@ const CustomerPanel = () => {
               </InputGroup.Text>
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
-                readOnly={!editMode}
+                readOnly={true}
+                defaultValue={customer_id}
               />
             </InputGroup>
           </Col>
@@ -45,6 +62,7 @@ const CustomerPanel = () => {
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
+                defaultValue={customer_name}
               />
             </InputGroup>
           </Col>
@@ -56,6 +74,7 @@ const CustomerPanel = () => {
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
+                defaultValue={tax_ID}
               />
             </InputGroup>
           </Col>
@@ -67,6 +86,7 @@ const CustomerPanel = () => {
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
+                defaultValue={contact_person}
               />
             </InputGroup>
           </Col>
@@ -78,6 +98,7 @@ const CustomerPanel = () => {
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
+                defaultValue={phone}
               />
             </InputGroup>
           </Col>
@@ -89,6 +110,7 @@ const CustomerPanel = () => {
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
+                defaultValue={fax_number}
               />
             </InputGroup>
           </Col>
@@ -100,6 +122,7 @@ const CustomerPanel = () => {
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
+                defaultValue={customer_email}
               />
             </InputGroup>
           </Col>
@@ -111,6 +134,7 @@ const CustomerPanel = () => {
               <FormControl
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
+                defaultValue={customer_address}
               />
             </InputGroup>
           </Col>

@@ -20,7 +20,13 @@ const Customer = () => {
             <Tab.Content>
               <Tab.Pane eventKey="#add">新增客戶</Tab.Pane>
               <Tab.Pane eventKey="#link1">
-                <CustomerPanel />
+                <CustomerPanel
+                  customerInfo={{
+                    customer_id: 1,
+                    customer_name: "xxx文具行",
+                    customer_address: "斗六市大學路3段123號"
+                  }}
+                />
               </Tab.Pane>
             </Tab.Content>
           </Col>
