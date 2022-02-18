@@ -1,4 +1,5 @@
 import CustomerPanel from "components/customer/customerPanel";
+import AddCustomerPanel from "components/customer/addCustomerPanel";
 import { Tab, Row, Col, ListGroup, Container } from "react-bootstrap";
 
 const Customer = () => {
@@ -18,7 +19,9 @@ const Customer = () => {
           </Col>
           <Col sm={8}>
             <Tab.Content>
-              <Tab.Pane eventKey="#add">新增客戶</Tab.Pane>
+              <Tab.Pane eventKey="#add">
+                <AddCustomerPanel />
+              </Tab.Pane>
               <Tab.Pane eventKey="#link1">
                 <CustomerPanel
                   customerInfo={{
