@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { apiAddCustomer } from "api/customerApi";
+import { customerContext } from "context/customerContext";
+import { useState, useContext } from "react";
 import {
   Button,
   InputGroup,
@@ -8,7 +10,7 @@ import {
   Card,
   Form
 } from "react-bootstrap";
-import { IaddCustomerInfo } from "types/customer";
+import { IaddCustomerInfo, IcustomerInfo } from "types/customer";
 
 const AddCustomerPanel = () => {
   const [validated, setValidated] = useState(false);
@@ -24,7 +26,7 @@ const AddCustomerPanel = () => {
     customer_email,
     customer_address
   } = addCustomerInfo;
-
+  const { customerInfoList, setCustomerInfoList } = useContext(customerContext);
   function inputChangeHandle(prop: string, val: string): void {
     setAddCustomerInfo((prev) => {
       return {
@@ -34,12 +36,22 @@ const AddCustomerPanel = () => {
     });
   }
 
-  function submitHandle(e: React.FormEvent<HTMLFormElement>): void {
+  async function submitHandle(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     e.stopPropagation();
     const form = e.currentTarget;
     if (!form.checkValidity()) return;
     setValidated(true);
+    try {
+      const res = await apiAddCustomer(addCustomerInfo);
+      const newCustomerInfo: IcustomerInfo = res.data;
+      setCustomerInfoList([...customerInfoList, newCustomerInfo]);
+      alert("新增成功");
+      setAddCustomerInfo({ customer_name: "" });
+      setValidated(false);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -58,7 +70,7 @@ const AddCustomerPanel = () => {
                 <FormControl
                   required
                   aria-describedby="inputGroup-sizing-default"
-                  defaultValue={customer_name}
+                  value={customer_name}
                   onChange={(e) =>
                     inputChangeHandle("customer_name", e.target.value)
                   }
@@ -72,7 +84,7 @@ const AddCustomerPanel = () => {
                 </InputGroup.Text>
                 <FormControl
                   aria-describedby="inputGroup-sizing-default"
-                  defaultValue={tax_ID}
+                  value={tax_ID ? tax_ID : ""}
                   onChange={(e) => inputChangeHandle("tax_ID", e.target.value)}
                 />
               </InputGroup>
@@ -84,7 +96,7 @@ const AddCustomerPanel = () => {
                 </InputGroup.Text>
                 <FormControl
                   aria-describedby="inputGroup-sizing-default"
-                  defaultValue={contact_person}
+                  value={contact_person ? contact_person : ""}
                   onChange={(e) =>
                     inputChangeHandle("contact_person", e.target.value)
                   }
@@ -98,7 +110,7 @@ const AddCustomerPanel = () => {
                 </InputGroup.Text>
                 <FormControl
                   aria-describedby="inputGroup-sizing-default"
-                  defaultValue={phone}
+                  value={phone ? phone : ""}
                   onChange={(e) => inputChangeHandle("phone", e.target.value)}
                 />
               </InputGroup>
@@ -110,7 +122,7 @@ const AddCustomerPanel = () => {
                 </InputGroup.Text>
                 <FormControl
                   aria-describedby="inputGroup-sizing-default"
-                  defaultValue={fax_number}
+                  value={fax_number ? fax_number : ""}
                   onChange={(e) =>
                     inputChangeHandle("fax_number", e.target.value)
                   }
@@ -124,7 +136,7 @@ const AddCustomerPanel = () => {
                 </InputGroup.Text>
                 <FormControl
                   aria-describedby="inputGroup-sizing-default"
-                  defaultValue={customer_email}
+                  value={customer_email ? customer_email : ""}
                   onChange={(e) =>
                     inputChangeHandle("customer_email", e.target.value)
                   }
@@ -138,7 +150,7 @@ const AddCustomerPanel = () => {
                 </InputGroup.Text>
                 <FormControl
                   aria-describedby="inputGroup-sizing-default"
-                  defaultValue={customer_address}
+                  value={customer_address ? customer_address : ""}
                   onChange={(e) =>
                     inputChangeHandle("customer_address", e.target.value)
                   }
