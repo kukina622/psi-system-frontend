@@ -54,7 +54,7 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
               />
             </InputGroup>
           </Col>
-          <Col md={8}>
+          <Col md={6}>
             <InputGroup className="mt-3">
               <InputGroup.Text id="inputGroup-sizing-default">
                 客戶名稱
