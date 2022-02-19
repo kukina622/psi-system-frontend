@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { apiUpdateCustomerById } from "api/customerApi";
+import { customerContext } from "context/customerContext";
+import { useState, useContext, useEffect } from "react";
 import {
   Button,
   InputGroup,
@@ -27,6 +29,39 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
     customer_email,
     customer_address
   } = _customerInfo;
+  const { setCustomerInfoList } = useContext(customerContext);
+  // prop update
+  useEffect(() => {
+    setCustomerInfo(customerInfo);
+  }, [customerInfo]);
+
+  function inputChangeHandle(prop: string, value: string) {
+    setCustomerInfo((prev) => {
+      return {
+        ...prev,
+        [prop]: value
+      };
+    });
+  }
+
+  async function updateCustomer() {
+    const { customer_id } = _customerInfo;
+    try {
+      await apiUpdateCustomerById(_customerInfo, customer_id);
+      setCustomerInfoList((prev: IcustomerInfo[]) => {
+        const next = [...prev];
+        const index = prev.findIndex(
+          (customerInfo: IcustomerInfo) =>
+            customerInfo.customer_id === customer_id
+        );
+        next[index] = _customerInfo;
+        return next;
+      });
+      alert("更新成功");
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <Card>
       <Card.Header className="position-relative">
@@ -63,6 +98,9 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
                 defaultValue={customer_name}
+                onChange={(e) =>
+                  inputChangeHandle("customer_name", e.target.value)
+                }
               />
             </InputGroup>
           </Col>
@@ -75,6 +113,7 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
                 defaultValue={tax_ID}
+                onChange={(e) => inputChangeHandle("tax_ID", e.target.value)}
               />
             </InputGroup>
           </Col>
@@ -87,6 +126,9 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
                 defaultValue={contact_person}
+                onChange={(e) =>
+                  inputChangeHandle("contact_person", e.target.value)
+                }
               />
             </InputGroup>
           </Col>
@@ -99,6 +141,7 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
                 defaultValue={phone}
+                onChange={(e) => inputChangeHandle("phone", e.target.value)}
               />
             </InputGroup>
           </Col>
@@ -111,6 +154,9 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
                 defaultValue={fax_number}
+                onChange={(e) =>
+                  inputChangeHandle("fax_number", e.target.value)
+                }
               />
             </InputGroup>
           </Col>
@@ -123,6 +169,9 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
                 defaultValue={customer_email}
+                onChange={(e) =>
+                  inputChangeHandle("customer_email", e.target.value)
+                }
               />
             </InputGroup>
           </Col>
@@ -135,6 +184,9 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
                 aria-describedby="inputGroup-sizing-default"
                 readOnly={!editMode}
                 defaultValue={customer_address}
+                onChange={(e) =>
+                  inputChangeHandle("customer_address", e.target.value)
+                }
               />
             </InputGroup>
           </Col>
@@ -143,6 +195,7 @@ const CustomerPanel = ({ customerInfo }: customerPanelProps) => {
               variant="primary"
               className="w-100 me-1 mt-3"
               disabled={!editMode}
+              onClick={updateCustomer}
             >
               修改
             </Button>
