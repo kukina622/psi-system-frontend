@@ -26,6 +26,8 @@ const InventoryCard = ({ inventoryInfo }: inventoryCardProps) => {
             <br />
             <span>購買時間：{formatDate(inventoryInfo.purchase_time)} </span>
             <br />
+            <span>購買廠商：{inventoryInfo.purchase_manufacturer} </span>
+            <br />
             <Button
               variant="primary"
               className="mt-1"

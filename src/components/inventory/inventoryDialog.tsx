@@ -27,9 +27,10 @@ const InventoryDialog = ({
     inventory_name,
     purchase_price,
     inventory_quantity,
-    purchase_time
+    purchase_time,
+    purchase_manufacturer
   } = _inventoryInfo;
-  
+
   useEffect(() => {
     setInventoryInfo(inventoryInfo);
   }, [inventoryInfo]);
@@ -134,7 +135,7 @@ const InventoryDialog = ({
             }}
           />
         </InputGroup>
-        <InputGroup>
+        <InputGroup className="mb-3">
           <InputGroup.Text id="inputGroup-sizing-default">
             購買時間
           </InputGroup.Text>
@@ -144,6 +145,19 @@ const InventoryDialog = ({
             defaultValue={formatDate(purchase_time)}
             onChange={(e) => {
               inputChangeHandle("purchase_time", e.target.value);
+            }}
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputGroup.Text id="inputGroup-sizing-default">
+            購買廠商
+          </InputGroup.Text>
+          <Form.Control
+            aria-describedby="inputGroup-sizing-default"
+            readOnly={!editMode}
+            defaultValue={purchase_manufacturer}
+            onChange={(e) => {
+              inputChangeHandle("purchase_manufacturer", e.target.value);
             }}
           />
         </InputGroup>
