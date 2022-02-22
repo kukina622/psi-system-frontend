@@ -1,4 +1,5 @@
 import axios from "./axios";
-import { IsaleInfo } from "types/sale";
+import { IaddSaleInfo } from "types/sale";
 
-export const apiAddSaleList = (data: IsaleInfo[]) => axios.post("/sale", data);
+export const apiAddSaleList = (data: IaddSaleInfo[]) =>
+  axios.post("/sale", data);
