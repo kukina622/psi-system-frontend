@@ -4,6 +4,7 @@ import Navigator from "components/Navigator";
 import Inventory from "views/Inventory";
 import Customer from "views/Customer";
 import Purchase from "views/Purchase";
+import Sale from "views/Sale";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Inventory />} />
         <Route path="customer" element={<Customer />} />
         <Route path="purchase" element={<Purchase />} />
+        <Route path="sale" element={<Sale />} />
       </Routes>
     </div>
   );
