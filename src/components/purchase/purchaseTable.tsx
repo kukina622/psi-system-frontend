@@ -28,11 +28,29 @@ const PurchaseTable = () => {
     }
   }
 
+  async function addAllPurchase() {
+    try {
+      const _multiPurchases: IaddPurchaseInfo[] = multiPurchases.map(
+        (purchase: IpurchaseInfo) => {
+          return {
+            ...purchase,
+            purchase_time: new Date(purchase.purchase_time)
+          };
+        }
+      );
+      await apiAddPurchaseList(_multiPurchases);
+      alert("送出成功");
+      setMultiPurchases([]);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <Card>
       <Card.Body>
         <div className="d-flex justify-content-end">
-          <Button>批量出貨</Button>
+          <Button onClick={addAllPurchase}>批量出貨</Button>
         </div>
         <Table striped bordered hover className="mt-1">
           <thead>
