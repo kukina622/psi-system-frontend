@@ -33,7 +33,7 @@ const PurchasePanel = () => {
     switch (prop) {
       case "purchase_price":
       case "purchase_quantity":
-        _value = parseInt(value);
+        _value = parseInt(value) || 0;
         break;
     }
     setPurchaseInfo((prev) => {
