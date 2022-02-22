@@ -1,5 +1,6 @@
 import { apiAddPurchaseList } from "api/purchaseApi";
-import { useState, useRef } from "react";
+import { purchaseContext } from "context/purchaseContext";
+import { useState, useRef, useContext } from "react";
 import {
   Button,
   Card,
@@ -25,6 +26,7 @@ const PurchasePanel = () => {
     purchase_time,
     purchase_manufacturer
   } = purchaseInfo;
+  const { multiPurchases, setMultiPurchases } = useContext(purchaseContext);
 
   function inputChangeHandle(prop: string, value: string) {
     let _value: number | string = value;
@@ -56,6 +58,14 @@ const PurchasePanel = () => {
       } catch (err) {
         console.log(err);
       }
+    }
+  }
+  function addBulkPurchase() {
+    if (formRef.current && formRef.current.checkValidity()) {
+      const newMultiPurchases = [...multiPurchases, purchaseInfo];
+      setMultiPurchases(newMultiPurchases);
+      setPurchaseInfo({} as IpurchaseInfo);
+      formRef.current.reset();
     }
   }
 
@@ -133,6 +143,7 @@ const PurchasePanel = () => {
                   進貨時間
                 </InputGroup.Text>
                 <Form.Control
+                  required
                   type="date"
                   defaultValue={purchase_time}
                   onChange={(e) => {
@@ -158,7 +169,9 @@ const PurchasePanel = () => {
             </Col>
           </Row>
           <div className="d-flex justify-content-end mt-3">
-            <Button variant="secondary me-2">加入批次清單</Button>
+            <Button variant="secondary me-2" onClick={addBulkPurchase}>
+              加入批次清單
+            </Button>
             <Button variant="primary" onClick={addPurchase}>
               單個進貨
             </Button>
